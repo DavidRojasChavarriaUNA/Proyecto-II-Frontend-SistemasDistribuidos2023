@@ -182,7 +182,7 @@
             },
             async CrearAlbum() {
                 try {
-                    const respuestaHttp = await fetch(`${urlBase}/InsertAlbum`, {
+                    const respuestaHttp = await fetch(`${urlBase}/InsertAlbumQueue`, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -192,8 +192,7 @@
                     });
                     const respuestaServidor = await respuestaHttp.json();
                     if (respuestaServidor.Code == Codigos.CodeSuccess) {
-                        this.album._id = respuestaServidor.data;
-                        this.$router.push(`/editarAlbum/${respuestaServidor.data}`);
+                        this.$router.push(`/albumes`);
                     }
                     this.$emit('mostrarMensaje', respuestaServidor);
                 } catch (error) {
@@ -204,7 +203,7 @@
             async ActualizarAlbum() {
                 try {
                     const idAlbum = this.$route.params.idAlbum;
-                    const respuestaHttp = await fetch(`${urlBase}/UpdateAlbum/${idAlbum}`, {
+                    const respuestaHttp = await fetch(`${urlBase}/UpdateAlbumQueue/${idAlbum}`, {
                         method: 'PUT',
                         headers: {
                             'Accept': 'application/json',
@@ -213,6 +212,9 @@
                         body: JSON.stringify(this.album)
                     });
                     const respuestaServidor = await respuestaHttp.json();
+                    if (respuestaServidor.Code == Codigos.CodeSuccess) {
+                        this.$router.push(`/albumes`);
+                    }
                     this.$emit('mostrarMensaje', respuestaServidor);
                 } catch (error) {
                     console.log(error);

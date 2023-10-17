@@ -92,7 +92,7 @@
             async notificarEliminar(albumId) {
                 cerrarModalEliminar(albumId);
                 try {
-                    const respuestaHttp = await fetch(`${urlBase}/DeleteAlbum/${albumId}`, {
+                    const respuestaHttp = await fetch(`${urlBase}/DeleteAlbumQueue/${albumId}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'

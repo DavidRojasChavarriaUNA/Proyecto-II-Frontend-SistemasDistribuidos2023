@@ -183,7 +183,7 @@
             },
             async CrearPelicula() {
                 try {
-                    const respuestaHttp = await fetch(`${urlBase}/InsertMovie`, {
+                    const respuestaHttp = await fetch(`${urlBase}/InsertMovieQueue`, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -193,8 +193,7 @@
                     });
                     const respuestaServidor = await respuestaHttp.json();
                     if (respuestaServidor.Code == Codigos.CodeSuccess) {
-                        this.pelicula._id = respuestaServidor.data;
-                        this.$router.push(`/editarPelicula/${respuestaServidor.data}`);
+                        this.$router.push(`/peliculas`);
                     }
                     this.$emit('mostrarMensaje', respuestaServidor);
                 } catch (error) {
@@ -205,7 +204,7 @@
             async ActualizarPelicula() {
                 try {
                     const idPelicula = this.$route.params.idPelicula;
-                    const respuestaHttp = await fetch(`${urlBase}/UpdateMovie/${idPelicula}`, {
+                    const respuestaHttp = await fetch(`${urlBase}/UpdateMovieQueue/${idPelicula}`, {
                         method: 'PUT',
                         headers: {
                             'Accept': 'application/json',
@@ -214,6 +213,9 @@
                         body: JSON.stringify(this.pelicula)
                     });
                     const respuestaServidor = await respuestaHttp.json();
+                    if (respuestaServidor.Code == Codigos.CodeSuccess) {
+                        this.$router.push(`/peliculas`);
+                    }
                     this.$emit('mostrarMensaje', respuestaServidor);
                 } catch (error) {
                     console.log(error);

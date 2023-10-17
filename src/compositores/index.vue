@@ -94,7 +94,7 @@
             async notificarEliminar(compositorId) {
                 cerrarModalEliminar(compositorId);
                 try {
-                    const respuestaHttp = await fetch(`${urlBase}/DeleteComposer/${compositorId}`, {
+                    const respuestaHttp = await fetch(`${urlBase}/DeleteComposerQueue/${compositorId}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'

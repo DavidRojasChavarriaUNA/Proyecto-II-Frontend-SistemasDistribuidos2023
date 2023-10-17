@@ -182,7 +182,7 @@
             },
             async CrearCompositor() {
                 try {
-                    const respuestaHttp = await fetch(`${urlBase}/InsertComposer`, {
+                    const respuestaHttp = await fetch(`${urlBase}/InsertComposerQueue`, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -192,8 +192,7 @@
                     });
                     const respuestaServidor = await respuestaHttp.json();
                     if (respuestaServidor.Code == Codigos.CodeSuccess) {
-                        this.compositor._id = respuestaServidor.data;
-                        this.$router.push(`/editarCompositor/${respuestaServidor.data}`);
+                        this.$router.push(`/compositores`);
                     }
                     this.$emit('mostrarMensaje', respuestaServidor);
                 } catch (error) {
@@ -204,7 +203,7 @@
             async ActualizarCompositor() {
                 try {
                     const idCompositor = this.$route.params.idCompositor;
-                    const respuestaHttp = await fetch(`${urlBase}/UpdateComposer/${idCompositor}`, {
+                    const respuestaHttp = await fetch(`${urlBase}/UpdateComposerQueue/${idCompositor}`, {
                         method: 'PUT',
                         headers: {
                             'Accept': 'application/json',
@@ -213,6 +212,9 @@
                         body: JSON.stringify(this.compositor)
                     });
                     const respuestaServidor = await respuestaHttp.json();
+                    if (respuestaServidor.Code == Codigos.CodeSuccess) {
+                        this.$router.push(`/compositores`);
+                    }
                     this.$emit('mostrarMensaje', respuestaServidor);
                 } catch (error) {
                     console.log(error);

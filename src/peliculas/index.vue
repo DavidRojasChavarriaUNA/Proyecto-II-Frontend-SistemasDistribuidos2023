@@ -92,7 +92,7 @@
             async notificarEliminar(peliculaId) {
                 cerrarModalEliminar(peliculaId);
                 try {
-                    const respuestaHttp = await fetch(`${urlBase}/DeleteMovie/${peliculaId}`, {
+                    const respuestaHttp = await fetch(`${urlBase}/DeleteMovieQueue/${peliculaId}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
