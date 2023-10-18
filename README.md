@@ -40,10 +40,10 @@ Para ejecutar el proyecto deberá ejecutar los siguientes pasos:
 
 5. Publicar el frontend en Netlify, y configurar el paso 3 con la URL que va a utilizar con el frontend
    - Runtime: Not set
-   - Base directory: Frontend
-   - Package directory: Frontend/
+   - Base directory: /
+   - Package directory: Not set
    - Build command: npm run build
-   - Publish directory: Frontend/dist
-   - Functions directory: Frontend/
+   - Publish directory: dist
+   - Functions directory: Not set
    - Deploy log visibility: Logs are public
    - Build status: Active
