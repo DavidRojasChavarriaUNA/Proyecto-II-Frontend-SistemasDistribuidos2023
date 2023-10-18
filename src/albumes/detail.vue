@@ -197,7 +197,7 @@
                     this.$emit('mostrarMensaje', respuestaServidor);
                 } catch (error) {
                     console.log(error);
-                    this.$emit('mostrarMensaje', CrearMensajeError("Ocurrió un error al crear el compositor"));
+                    this.$emit('mostrarMensaje', CrearMensajeError("Ocurrió un error al crear el álbum"));
                 }
             },
             async ActualizarAlbum() {

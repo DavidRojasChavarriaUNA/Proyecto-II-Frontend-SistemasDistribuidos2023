@@ -16,6 +16,9 @@ Ciclo II 2023
 Repositorio \
 	https://github.com/DavidRojasChavarriaUNA/Proyecto-II-Frontend-SistemasDistribuidos2023 \
 
+URL del Frontend \
+	https://proy-ii-front-drch-sist-dist-una-2023.netlify.app/
+
 Para ejecutar el proyecto deberá ejecutar los siguientes pasos:
 
 1. Para ejecutar el proyecto deberá ingresar a la consola o terminal y ubicarse en la carpeta del frontend \
@@ -44,6 +47,3 @@ Para ejecutar el proyecto deberá ejecutar los siguientes pasos:
    - Functions directory: Frontend/
    - Deploy log visibility: Logs are public
    - Build status: Active
-
-URL del Frontend \
-	https://proy-ii-front-drch-sist-dist-una-2023.netlify.app/

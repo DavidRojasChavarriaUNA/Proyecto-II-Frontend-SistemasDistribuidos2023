@@ -218,7 +218,7 @@
                     this.$emit('mostrarMensaje', respuestaServidor);
                 } catch (error) {
                     console.log(error);
-                    this.$emit('mostrarMensaje', CrearMensajeError("Ocurrió un error al obtener la película"));
+                    this.$emit('mostrarMensaje', CrearMensajeError("Ocurrió un error al actualizar el compositor"));
                 }
             },
             async ObtenerListadoDePeliculas() {

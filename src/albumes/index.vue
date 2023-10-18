@@ -103,7 +103,7 @@
                     this.ObtenerListadoDeAlbumes();
                 } catch (error) {
                     console.log(error);
-                    this.$emit('mostrarMensaje', CrearMensajeError("Ocurrió un error al eliminar la película"));
+                    this.$emit('mostrarMensaje', CrearMensajeError("Ocurrió un error al eliminar el álbum"));
                 }
             },
         }
