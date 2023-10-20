@@ -10,7 +10,7 @@
             <p>
                 El cine y su música es una aplicación desarrollada por David Jesús Rojas Chavarria.
                 <br>
-                Proyecto I, Curso Sistemas distribuidos
+                Proyecto II, Curso Sistemas distribuidos
                 <br>
                 UNA - 2023.
             </p>
