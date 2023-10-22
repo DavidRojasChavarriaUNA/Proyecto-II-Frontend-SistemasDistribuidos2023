@@ -10,7 +10,13 @@
                             selecciones un álbum
                             de nuestro catálogo para descubrirlo.
                         </p>
-                        <router-link to="/nuevoAlbum" class="btn btn-primary">Nuevo álbum</router-link>
+                        <div>
+                            <router-link to="/nuevoAlbum" class="btn btn-primary">Nuevo álbum</router-link>
+                            <button class="btn btn-secondary ms-1 me-1"
+                                v-on:click="ObtenerListadoDeAlbumes">Refrescar</button>
+                            <button class="btn btn-success ms-1 me-1" v-on:click="procesarQuequeAlbumes">Procesar
+                                Queue de álbumes</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row g-0 justify-content-md-center">
@@ -42,6 +48,9 @@
                     </div>
                 </div>
             </section>
+            <section>
+                <modal-logs v-bind:dataLogs="dataLogs"></modal-logs>
+            </section>
         </div>
     </div>
 </template>
@@ -49,21 +58,30 @@
 <script>
     const urlBase =
         import.meta.env.VITE_BASE_URL;
+
     import modalEliminarVue from '../ModalEliminar.vue';
+    import modalLogs from '../ModalLogs.vue';
+
     import {
         Codigos,
         cerrarModalEliminar,
         MensajeDatosRecientes,
-        CrearMensajeError
+        CrearMensajeError,
+        mostrarModalLogs
     } from '../js/Util';
 
     export default {
         components: {
-            modalEliminarVue
+            modalEliminarVue,
+            modalLogs
         },
         data() {
             return {
-                albumes: []
+                albumes: [],
+                dataLogs: {
+                    tituloCola: 'álbumes',
+                    logs: ''
+                }
             }
         },
         created() {
@@ -87,6 +105,29 @@
                 } catch (error) {
                     console.log(error);
                     this.$emit('mostrarMensaje', CrearMensajeError("Ocurrió un error al obtener los álbumes"));
+                }
+            },
+            async procesarQuequeAlbumes() {
+                try {
+                    const respuestaHttp = await fetch(`${urlBase}/ProcessAlbumsQueueMQ`, {
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    const respuestaServidor = await respuestaHttp.json();
+                    if (respuestaServidor.Code == Codigos.CodeSuccess && respuestaServidor.data.length > 0) {
+                        this.dataLogs.logs = JSON.stringify(respuestaServidor.data);
+                        mostrarModalLogs(true);
+                    } else {
+                        this.dataLogs.logs = '';
+                        mostrarModalLogs(false);
+                    }
+                    this.$emit('mostrarMensaje', respuestaServidor);
+                    this.ObtenerListadoDeAlbumes();
+                } catch (error) {
+                    console.log(error);
+                    this.$emit('mostrarMensaje', CrearMensajeError(
+                        "Ocurrió un error al procesar la cola de las álbumes"));
                 }
             },
             async notificarEliminar(albumId) {

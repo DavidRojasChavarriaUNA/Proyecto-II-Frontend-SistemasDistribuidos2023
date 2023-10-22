@@ -1,19 +1,18 @@
 <template>
-    <!-- Modal Eliminar-->
+    <!-- Modal Logs-->
     
-    <div class="modal fade" :id="`modalEliminar${id}`" tabindex="-1" aria-labelledby="labelEliminar" aria-hidden="true">
+    <div class="modal fade" :id="`modalLogs`" tabindex="-1" aria-labelledby="labelLogs" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="labelEliminar">Eliminar</h5>
+                <h5 class="modal-title" id="labelLogs">Resultados de procesar la cola de {{dataLogs.tituloCola}}.</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ¿Desea eliminar el registro seleccionado?
+                <textarea class="form-control sc" v-html="dataLogs.logs" readonly rows="5"></textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-danger" @click="notificarEliminar">Eliminar</button>
             </div>
         </div>
     </div>
@@ -22,11 +21,6 @@
 
 <script>
     export default {
-        props:['id'],
-        methods:{
-            notificarEliminar(){
-                this.$emit('notificarEliminar');
-            }
-        }
+        props:['dataLogs']
     }
 </script>

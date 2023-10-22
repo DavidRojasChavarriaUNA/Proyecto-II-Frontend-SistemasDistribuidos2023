@@ -10,7 +10,13 @@
                             una pelicula
                             de nuestro catálogo para descubrirlo.
                         </p>
-                        <router-link to="/nuevaPelicula" class="btn btn-primary">Nueva película</router-link>
+                        <div>
+                            <router-link to="/nuevaPelicula" class="btn btn-primary">Nueva película</router-link>
+                            <button class="btn btn-secondary ms-1 me-1"
+                                v-on:click="ObtenerListadoDePeliculas">Refrescar</button>
+                            <button class="btn btn-success ms-1 me-1" v-on:click="procesarQuequePeliculas">Procesar
+                                Queue de peliculas</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row g-0 justify-content-md-center">
@@ -42,6 +48,9 @@
                     </div>
                 </div>
             </section>
+            <section>
+                <modal-logs v-bind:dataLogs="dataLogs"></modal-logs>
+            </section>
         </div>
     </div>
 </template>
@@ -49,21 +58,30 @@
 <script>
     const urlBase =
         import.meta.env.VITE_BASE_URL;
+
     import modalEliminarVue from '../ModalEliminar.vue';
+    import modalLogs from '../ModalLogs.vue';
+
     import {
         Codigos,
         cerrarModalEliminar,
         MensajeDatosRecientes,
-        CrearMensajeError
+        CrearMensajeError,
+        mostrarModalLogs
     } from '../js/Util';
 
     export default {
         components: {
-            modalEliminarVue
+            modalEliminarVue,
+            modalLogs
         },
         data() {
             return {
-                peliculas: []
+                peliculas: [],
+                dataLogs: {
+                    tituloCola: 'películas',
+                    logs: ''
+                }
             }
         },
         created() {
@@ -87,6 +105,29 @@
                 } catch (error) {
                     console.log(error);
                     this.$emit('mostrarMensaje', CrearMensajeError("Ocurrió un error al obtener las películas"));
+                }
+            },
+            async procesarQuequePeliculas() {
+                try {
+                    const respuestaHttp = await fetch(`${urlBase}/ProcessMoviesQueueMQ`, {
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    const respuestaServidor = await respuestaHttp.json();
+                    if (respuestaServidor.Code == Codigos.CodeSuccess && respuestaServidor.data.length > 0) {
+                        this.dataLogs.logs = JSON.stringify(respuestaServidor.data);
+                        mostrarModalLogs(true);
+                    } else {
+                        this.dataLogs.logs = '';
+                        mostrarModalLogs(false);
+                    }
+                    this.$emit('mostrarMensaje', respuestaServidor);
+                    this.ObtenerListadoDePeliculas();
+                } catch (error) {
+                    console.log(error);
+                    this.$emit('mostrarMensaje', CrearMensajeError(
+                        "Ocurrió un error al procesar la cola de las películas"));
                 }
             },
             async notificarEliminar(peliculaId) {

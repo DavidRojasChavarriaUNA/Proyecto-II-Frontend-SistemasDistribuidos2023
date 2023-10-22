@@ -3,7 +3,7 @@
     <header-view></header-view>
     <router-view v-on:mostrarMensaje="mostrarMensaje"></router-view>
     <section>
-      <div id="toastMensajes" class="toast-container position-absolute p-3 bottom-0 end-0" style="position: fixed !important;">
+      <div id="toastMensajes" class="toast-container position-absolute p-3 bottom-0 end-0" style="position: fixed !important; z-index: 10001;">
       </div>
     </section>
     <footer-view></footer-view>

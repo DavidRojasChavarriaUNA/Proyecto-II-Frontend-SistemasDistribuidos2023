@@ -1,5 +1,7 @@
 import * as bootstrap from 'bootstrap';
-import {marked} from 'marked';
+import {
+    marked
+} from 'marked';
 
 const None = -1;
 const CodeSuccess = 0;
@@ -16,6 +18,17 @@ export const Codigos = {
     CodeNotFound,
     CodeError
 };
+
+export const mostrarModalLogs = (mostrar) => {
+    const modalElem = document.querySelector(`#modalLogs`);
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElem);
+    if (mostrar) {
+        modal.show();
+    }
+    else {
+        modal.hide();
+    }
+}
 
 export const cerrarModalEliminar = (id) => {
     const modalEliminarElem = document.querySelector(`#modalEliminar${id}`);

@@ -10,7 +10,13 @@
                             álbumes, te invitamos a que selecciones un compositor
                             de nuestro catálogo para descubrirlo.
                         </p>
-                        <router-link to="/nuevoCompositor" class="btn btn-primary">Nuevo compositor</router-link>
+                        <div>
+                            <router-link to="/nuevoCompositor" class="btn btn-primary">Nuevo compositor</router-link>
+                            <button class="btn btn-secondary ms-1 me-1"
+                                v-on:click="ObtenerListadoDeCompositores">Refrescar</button>
+                            <button class="btn btn-success ms-1 me-1" v-on:click="procesarQuequeCompositores">Procesar
+                                Queue de compositores</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row g-0 justify-content-md-center">
@@ -44,6 +50,9 @@
                     </div>
                 </div>
             </section>
+            <section>
+                <modal-logs v-bind:dataLogs="dataLogs"></modal-logs>
+            </section>
         </div>
     </div>
 </template>
@@ -51,21 +60,30 @@
 <script>
     const urlBase =
         import.meta.env.VITE_BASE_URL;
+
     import modalEliminarVue from '../ModalEliminar.vue';
+    import modalLogs from '../ModalLogs.vue';
+
     import {
         Codigos,
         cerrarModalEliminar,
         MensajeDatosRecientes,
-        CrearMensajeError
+        CrearMensajeError,
+        mostrarModalLogs
     } from '../js/Util';
 
     export default {
         components: {
-            modalEliminarVue
+            modalEliminarVue,
+            modalLogs
         },
         data() {
             return {
-                compositores: []
+                compositores: [],
+                dataLogs: {
+                    tituloCola: 'compositores',
+                    logs: ''
+                }
             }
         },
         created() {
@@ -89,6 +107,29 @@
                 } catch (error) {
                     console.log(error);
                     this.$emit('mostrarMensaje', CrearMensajeError("Ocurrió un error al obtener los compositores"));
+                }
+            },
+            async procesarQuequeCompositores() {
+                try {
+                    const respuestaHttp = await fetch(`${urlBase}/ProcessComposersQueueMQ`, {
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    const respuestaServidor = await respuestaHttp.json();
+                    if (respuestaServidor.Code == Codigos.CodeSuccess && respuestaServidor.data.length > 0) {
+                        this.dataLogs.logs = JSON.stringify(respuestaServidor.data);
+                        mostrarModalLogs(true);
+                    } else {
+                        this.dataLogs.logs = '';
+                        mostrarModalLogs(false);
+                    }
+                    this.$emit('mostrarMensaje', respuestaServidor);
+                    this.ObtenerListadoDeCompositores();
+                } catch (error) {
+                    console.log(error);
+                    this.$emit('mostrarMensaje', CrearMensajeError(
+                        "Ocurrió un error al procesar la cola de las compositores"));
                 }
             },
             async notificarEliminar(compositorId) {
