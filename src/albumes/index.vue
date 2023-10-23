@@ -90,6 +90,7 @@
         methods: {
             async ObtenerListadoDeAlbumes() {
                 try {
+                    this.albumes = [];
                     const respuestaHttp = await fetch(`${urlBase}/GetAllAlbumes`, {
                         headers: {
                             'Accept': 'application/json'
