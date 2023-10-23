@@ -92,7 +92,6 @@
         methods: {
             async ObtenerListadoDeCompositores() {
                 try {
-                    this.compositores = [];
                     const respuestaHttp = await fetch(`${urlBase}/GetAllComposers`, {
                         headers: {
                             'Accept': 'application/json'

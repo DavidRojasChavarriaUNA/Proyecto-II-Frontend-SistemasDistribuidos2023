@@ -90,7 +90,6 @@
         methods: {
             async ObtenerListadoDePeliculas() {
                 try {
-                    this.peliculas = [];
                     const respuestaHttp = await fetch(`${urlBase}/GetAllMovies`, {
                         headers: {
                             'Accept': 'application/json'
